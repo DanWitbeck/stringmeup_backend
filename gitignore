@@ -1,0 +1,18 @@
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Compiled binaries
+*.exe
+*.test
+/server
+/bin/
+
+# Go build cache
+*.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
