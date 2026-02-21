@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/example/threadcraft-backend/internal/db"
-	"github.com/example/threadcraft-backend/internal/middleware"
 	"github.com/go-chi/chi/v5"
+	"stringmeup/backend/internal/db"
+	"stringmeup/backend/internal/middleware"
 )
 
 func HandleGet(svc *Service) http.HandlerFunc {

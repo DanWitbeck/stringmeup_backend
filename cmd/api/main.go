@@ -11,17 +11,17 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/example/threadcraft-backend/internal/auth"
-	"github.com/example/threadcraft-backend/internal/config"
-	"github.com/example/threadcraft-backend/internal/db"
-	"github.com/example/threadcraft-backend/internal/middleware"
-	"github.com/example/threadcraft-backend/internal/progress"
-	"github.com/example/threadcraft-backend/internal/projects"
-	"github.com/example/threadcraft-backend/internal/uploads"
-	"github.com/example/threadcraft-backend/internal/users"
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"stringmeup/backend/internal/auth"
+	"stringmeup/backend/internal/config"
+	"stringmeup/backend/internal/db"
+	"stringmeup/backend/internal/middleware"
+	"stringmeup/backend/internal/progress"
+	"stringmeup/backend/internal/projects"
+	"stringmeup/backend/internal/uploads"
+	"stringmeup/backend/internal/users"
 )
 
 func main() {

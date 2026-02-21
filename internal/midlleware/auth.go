@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/example/threadcraft-backend/internal/db"
 	"github.com/golang-jwt/jwt/v5"
+	"stringmeup/backend/internal/db"
 )
 
 type contextKey string

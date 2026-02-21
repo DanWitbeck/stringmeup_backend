@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/example/threadcraft-backend/internal/db"
-	"github.com/example/threadcraft-backend/internal/middleware"
-	"github.com/example/threadcraft-backend/internal/progress"
 	"github.com/go-chi/chi/v5"
+	"stringmeup/backend/internal/db"
+	"stringmeup/backend/internal/middleware"
+	"stringmeup/backend/internal/progress"
 )
 
 func RegisterRoutes(r chi.Router, svc *Service, progressSvc *progress.Service) {

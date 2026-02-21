@@ -9,35 +9,38 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/example/threadcraft-backend/internal/config"
+	smithyendpoints "github.com/aws/smithy-go/endpoints"
 	"github.com/google/uuid"
+	"stringmeup/backend/internal/config"
 )
 
+// r2EndpointResolver routes all S3 calls to Cloudflare R2
+type r2EndpointResolver struct {
+	accountID string
+}
+
+func (r *r2EndpointResolver) ResolveEndpoint(ctx context.Context, params s3.EndpointParameters) (
+	smithyendpoints.Endpoint, error) {
+	return smithyendpoints.Endpoint{
+		URI: *aws.String(fmt.Sprintf("https://%s.r2.cloudflarestorage.com", r.accountID)),
+	}, nil
+}
+
 type Service struct {
-	client    *s3.Client
 	presigner *s3.PresignClient
 	bucket    string
 	publicURL string
 }
 
 func NewService(cfg *config.Config) *Service {
-	r2Resolver := aws.EndpointResolverWithOptionsFunc(
-		func(service, region string, options ...any) (aws.Endpoint, error) {
-			return aws.Endpoint{
-				URL: fmt.Sprintf("https://%s.r2.cloudflarestorage.com", cfg.R2AccountID),
-			}, nil
-		},
-	)
+	client := s3.New(s3.Options{
+		Region: "auto",
+		Credentials: credentials.NewStaticCredentialsProvider(
+			cfg.R2AccessKeyID, cfg.R2SecretAccessKey, ""),
+		EndpointResolverV2: &r2EndpointResolver{accountID: cfg.R2AccountID},
+	})
 
-	awsCfg := aws.Config{
-		Region:                      "auto",
-		Credentials:                 credentials.NewStaticCredentialsProvider(cfg.R2AccessKeyID, cfg.R2SecretAccessKey, ""),
-		EndpointResolverWithOptions: r2Resolver,
-	}
-
-	client := s3.NewFromConfig(awsCfg)
 	return &Service{
-		client:    client,
 		presigner: s3.NewPresignClient(client),
 		bucket:    cfg.R2BucketName,
 		publicURL: cfg.R2PublicURL,
